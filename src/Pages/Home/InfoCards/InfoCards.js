@@ -1,7 +1,7 @@
 import React from 'react';
-import clock from '../../assets/icons/clock.svg'
-import marker from '../../assets/icons/marker.svg'
-import phone from '../../assets/icons/phone.svg'
+import clock from '../../../assets/icons/clock.svg'
+import marker from '../../../assets/icons/marker.svg'
+import phone from '../../../assets/icons/phone.svg'
 import InfoCard from './InfoCard';
 
 const InfoCards = () => {
@@ -31,7 +31,7 @@ const InfoCards = () => {
     ];
 
     return (
-        <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 py-24'>
+        <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 pb-[120px]'>
             {
                 cardData.map(card => <InfoCard
                     key={card.id}
