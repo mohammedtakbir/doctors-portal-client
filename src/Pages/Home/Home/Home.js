@@ -3,6 +3,7 @@ import InfoCards from '../InfoCards/InfoCards';
 import Banner from '../Banner/Banner';
 import ServiceCards from '../ServiceCards/ServiceCards';
 import DentalCare from '../DentalCare/DentalCare';
+import MakeAppointment from '../MakeAppointment/MakeAppointment';
 
 const Home = () => {
     return (
@@ -11,6 +12,7 @@ const Home = () => {
             <InfoCards />
             <ServiceCards />
             <DentalCare />
+            <MakeAppointment />
         </div>
     );
 };
