@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
@@ -10,11 +10,15 @@ const Login = () => {
     const { userLogin } = useContext(AuthContext);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [loginError, setLoginError] = useState('');
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = data => {
         console.log(data);
         userLogin(data.email, data.password)
             .then(res => {
+                navigate(from, { replace: true });
                 setLoginError('');
                 console.log(res.user)
                 toast.success('login successfully!')
