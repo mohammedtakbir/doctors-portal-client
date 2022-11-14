@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 const Login = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit } = useForm();
 
     const handleLogin = data => {
         console.log(data);
@@ -15,32 +15,27 @@ const Login = () => {
                 <form className="space-y-6" onSubmit={handleSubmit(handleLogin)}>
                     <h5 className="text-xl font-medium text-gray-900 text-center">Log in</h5>
                     <div>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Your email</label>
                         <input
-                            {...register("email")}
+                            {...register("email", { required: "Email Address is required" })}
                             type="email"
-                            name="email"
-                            id="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                            placeholder="name@company.com"
-                            required
                         />
+                        {errors.email && <p role="alert" className='text-red-500 text-sm'>{errors.email?.message}</p>}
                     </div>
                     <div>
-                        <label
-                            htmlFor="password"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                        <label className="block mb-2 text-sm font-medium text-gray-900"
                         >
                             Your password</label>
                         <input
-                            {...register("password")}
+                            {...register("password",
+                                {
+                                    required: "Password is required", minLength: {value: 6, message: 'Password should be at least 6 character'}
+                                })}
                             type="password"
-                            name="password"
-                            id="password"
-                            placeholder="••••••••"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                            required
                         />
+                        {errors.password && <p role="alert" className='text-red-500 text-sm'>{errors.password?.message}</p>}
                     </div>
                     <button className="ml-auto text-sm hover:underline !mt-1">Forgot Password?</button>
                     <button
