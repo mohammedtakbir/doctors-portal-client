@@ -22,7 +22,6 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
             appointmentDate: date
         };
         setTreatment(null);
-        console.log(booking)
 
         //* TODO: send data to the server 
         //* and once data is saved then close the modal
@@ -71,7 +70,6 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
                             type="submit"
                             value="SUBMIT"
                             className='btn btn-accent block w-full'
-                            required
                         />
                     </form>
                 </div>
