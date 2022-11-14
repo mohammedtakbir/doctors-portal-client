@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useContext } from 'react';
+import { AuthContext } from '../../Contexts/AuthProvider';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
+    const { createUser, updateUserProfile } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [signUpError, setSignUpError] = useState('');
 
     const handleSignUp = (data) => {
-        console.log(data);
+        //* update user profile
+        const userInfo = {
+            displayName: data.name
+        };
+        createUser(data.email, data.password)
+            .then(res => {
+                setSignUpError('');
+                handleUpdateUserProfile(userInfo);
+                console.log(res.user);
+                toast.success('sign up successfully!');
+            })
+            .catch(err => {
+                setSignUpError(err.message);
+                console.error(err)
+            })
+    };
+    const handleUpdateUserProfile = (userInfo) => {
+        updateUserProfile(userInfo)
+            .then(() => {
+                // Profile updated!
+            })
+            .catch(err => console.error(err))
     }
 
     return (
@@ -23,7 +49,7 @@ const SignUp = () => {
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         />
-                        {errors.name && <p role='alert' className='text-red-500'>{errors.name?.message}</p>}
+                        {errors.name && <p role='alert' className='text-red-500 text-sm'>{errors.name?.message}</p>}
                     </div>
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900">Your email</label>
@@ -34,7 +60,7 @@ const SignUp = () => {
                             type="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         />
-                        {errors.email && <p role='alert' className='text-red-500'>{errors.email?.message}</p>}
+                        {signUpError && <p className='text-red-500 !mt-0 text-sm'>{signUpError}</p>}
                     </div>
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900">Your password</label>
@@ -45,14 +71,15 @@ const SignUp = () => {
                                     minLength: { value: 6, message: 'Password should be at least 6 character' },
 
                                     //*  Minimum eight characters, at least one letter and one number:
-                                    pattern: {value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: 'Password should be strong'}
+                                    pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: ' Minimum eight characters, at least one letter and one number' }
                                 }
                             )}
                             type="password"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         />
-                        {errors.password && <p role='alert' className='text-red-500'>{errors.password?.message}</p>}
+                        {errors.password && <p role='alert' className='text-red-500 text-sm'>{errors.password?.message}</p>}
                     </div>
+                    {errors.password && <p role="alert" className='text-red-500 text-sm'>{errors.password?.message}</p>}
                     <button type="submit" className="w-full text-white bg-accent hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign Up</button>
                     <div className="text-sm font-medium text-gray-500 !mt-3 text-center">
                         Already have an account? <Link to="/login" className="text-secondary hover:underline">Login</Link>

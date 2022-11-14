@@ -1,12 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useContext } from 'react';
+import { AuthContext } from '../../Contexts/AuthProvider';
+import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 const Login = () => {
+    const { userLogin } = useContext(AuthContext);
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const [loginError, setLoginError] = useState('');
 
     const handleLogin = data => {
         console.log(data);
+        userLogin(data.email, data.password)
+            .then(res => {
+                setLoginError('');
+                console.log(res.user)
+                toast.success('login successfully!')
+            })
+            .catch(err => {
+                setLoginError(err.message);
+                console.error(err)
+            })
     }
 
     return (
@@ -38,6 +54,7 @@ const Login = () => {
                         {errors.password && <p role="alert" className='text-red-500 text-sm'>{errors.password?.message}</p>}
                     </div>
                     <button className="ml-auto text-sm hover:underline !mt-1">Forgot Password?</button>
+                    {loginError && <p className='text-red-500 !mt-0 text-sm'>{loginError}</p>}
                     <button
                         type="submit"
                         className="w-full text-white bg-accent hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login</button>
