@@ -6,7 +6,7 @@ import { AuthContext } from '../../Contexts/AuthProvider';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
-    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const { createUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [signUpError, setSignUpError] = useState('');
 
@@ -33,6 +33,15 @@ const SignUp = () => {
                 // Profile updated!
             })
             .catch(err => console.error(err))
+    }
+
+    const handleGoogleSignUp = () => {
+        signInWithGoogle()
+            .then(res => {
+                toast.success('sign up successfully')
+                console.log(res.user)
+            })
+            .then(err => console.log(err))
     }
 
     return (
@@ -87,7 +96,7 @@ const SignUp = () => {
                 </form>
                 <div className="divider">OR</div>
                 <div className='text-center'>
-                    <button type="button" className="border border-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 hover:bg-accent hover:text-white">
+                    <button onClick={handleGoogleSignUp} type="button" className="border border-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 hover:bg-accent hover:text-white">
                         <svg
                             className="mr-2 -ml-1 w-4 h-4"
                             aria-hidden="true"

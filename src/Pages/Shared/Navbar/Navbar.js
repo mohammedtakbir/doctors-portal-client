@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useContext } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,12 @@ const Navbar = () => {
             })
             .catch(err => console.error(err))
     }
+
+    /* useEffect(() => {
+        const test = document.getElementById('test');
+        const theme = test.attributes[1];
+        console.log(theme)
+    }, []) */
 
     const menuItems = <React.Fragment>
         <li><Link to='/'>Home</Link></li>
@@ -36,6 +43,7 @@ const Navbar = () => {
 
     </React.Fragment>
 
+ 
     return (
         <>
             <div className="navbar bg-base-100 justify-between">

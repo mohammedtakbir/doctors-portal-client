@@ -7,8 +7,8 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 
 const Login = () => {
-    const { userLogin } = useContext(AuthContext);
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { userLogin, forgotPassword, signInWithGoogle } = useContext(AuthContext);
+    const { register, formState: { errors }, handleSubmit, getValues } = useForm();
     const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,6 +27,28 @@ const Login = () => {
                 setLoginError(err.message);
                 console.error(err)
             })
+    };
+
+    const handleForgotPassword = () => {
+        const getEmail = getValues();
+        if (getEmail.email === '') {
+            toast.error('insert email first');
+            return;
+        }
+        forgotPassword(getEmail.email)
+            .then(() => {
+                toast.success('please check your email to reset your password')
+            })
+            .catch(err => console.error(err))
+    };
+
+    const handleGoogleLogIn = () => {
+        signInWithGoogle()
+            .then(res => {
+                toast.success('login successfully')
+                console.log(res.user)
+            })
+            .then(err => console.log(err))
     }
 
     return (
@@ -57,7 +79,9 @@ const Login = () => {
                         />
                         {errors.password && <p role="alert" className='text-red-500 text-sm'>{errors.password?.message}</p>}
                     </div>
-                    <button className="ml-auto text-sm hover:underline !mt-1">Forgot Password?</button>
+                    <button type="button" onClick={handleForgotPassword} className='text-secondary text-sm hover:underline !mt-0'>
+                        Forgot Password
+                    </button>
                     {loginError && <p className='text-red-500 !mt-0 text-sm'>{loginError}</p>}
                     <button
                         type="submit"
@@ -68,7 +92,7 @@ const Login = () => {
                 </form>
                 <div className="divider">OR</div>
                 <div className='text-center'>
-                    <button type="button" className="border border-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 hover:bg-accent hover:text-white">
+                    <button onClick={handleGoogleLogIn} type="button" className="border border-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 hover:bg-accent hover:text-white">
                         <svg
                             className="mr-2 -ml-1 w-4 h-4"
                             aria-hidden="true"
