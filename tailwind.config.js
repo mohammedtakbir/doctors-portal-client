@@ -16,21 +16,6 @@ module.exports = {
       }
     ]
   },
-  /* daisyui: {
-    themes: [
-      {'dark': {
-        "primary": "#ddd",
-        "secondary": "#888",
-        "accent": "#fff",
-      }},
-      {'light': {
-        "primary": "#0FCFEC",
-        "secondary": "#19D3AE",
-        "accent": "#3A4256",
-      }}
-
-    ]
-  }, */
   theme: {
     extend: {},
   },

@@ -19,7 +19,7 @@ const InfoCards = () => {
             name: 'Visit our location',
             description: 'Brooklyn, NY 10036, United States',
             icon: marker,
-            bgClass: 'bg-accent'
+            bgClass: 'bg-gradient-to-r from-accent to-secondary'
         },
         {
             id: 3,

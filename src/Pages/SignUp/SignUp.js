@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
@@ -9,6 +9,7 @@ const SignUp = () => {
     const { createUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [signUpError, setSignUpError] = useState('');
+    const navigate = useNavigate();
 
     const handleSignUp = (data) => {
         //* update user profile
@@ -30,7 +31,7 @@ const SignUp = () => {
     const handleUpdateUserProfile = (userInfo) => {
         updateUserProfile(userInfo)
             .then(() => {
-                // Profile updated!
+                navigate('/');
             })
             .catch(err => console.error(err))
     }
