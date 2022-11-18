@@ -4,12 +4,20 @@ import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import toast from 'react-hot-toast';
+import { useToken } from '../../hooks/useToken';
 
 const SignUp = () => {
     const { createUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [signUpError, setSignUpError] = useState('');
     const navigate = useNavigate();
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+
+    const [token] = useToken(createdUserEmail);
+
+    if(token){
+        navigate('/')
+    }
 
     const handleSignUp = (data) => {
         //* update user profile
@@ -20,6 +28,7 @@ const SignUp = () => {
             .then(res => {
                 setSignUpError('');
                 handleUpdateUserProfile(userInfo);
+                saveUserInfo(data.email, data.name);
                 console.log(res.user);
                 toast.success('sign up successfully!');
             })
@@ -30,11 +39,9 @@ const SignUp = () => {
     };
     const handleUpdateUserProfile = (userInfo) => {
         updateUserProfile(userInfo)
-            .then(() => {
-                navigate('/');
-            })
+            .then(() => { })
             .catch(err => console.error(err))
-    }
+    };
 
     const handleGoogleSignUp = () => {
         signInWithGoogle()
@@ -43,7 +50,34 @@ const SignUp = () => {
                 console.log(res.user)
             })
             .then(err => console.log(err))
+    };
+
+    const saveUserInfo = (email, name) => {
+        const user = { email, name };
+        fetch('http://localhost:5001/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                setCreatedUserEmail(email);
+            })
     }
+
+    /* const getUserToken = (email) => {
+        fetch(`http://localhost:5001/jwt?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.token){
+                    localStorage.setItem('accessToken', data.token)
+                    navigate('/');
+                }
+                console.log(data.token)
+            })
+    } */
 
     return (
         <section className='py-[100px] flex justify-center'>

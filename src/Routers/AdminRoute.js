@@ -2,11 +2,13 @@ import React from 'react';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Contexts/AuthProvider';
+import { useAdmin } from '../hooks/useAdmin';
 
-const PrivateRouter = ({ children }) => {
+const AdminRouter = ({ children }) => {
     const { user, loading } = useContext(AuthContext);
+    const [isAdmin, isAdminLoading] = useAdmin(user?.email)
     const location = useLocation();
-    if (loading) {
+    if (loading || isAdminLoading) {
         return (
             <div role="status" className='h-screen flex items-center justify-center'>
                 <svg className="inline mr-2 w-14 h-14 text-gray-200 animate-spin fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,10 +19,10 @@ const PrivateRouter = ({ children }) => {
             </div>
         )
     }
-    if (user) {
+    if (user && isAdmin) {
         return children;
     }
     return <Navigate to='/login' state={{ from: location }} replace />
 };
 
-export default PrivateRouter;
+export default AdminRouter;
