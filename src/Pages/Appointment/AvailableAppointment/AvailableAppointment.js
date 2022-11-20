@@ -4,7 +4,7 @@ import { useState } from 'react';
 import BookingModal from '../BookingModal/BookingModal';
 import AppointmentOption from './AppointmentOption';
 import { useQuery } from '@tanstack/react-query';
-import Loading from '../../Shared/Loading/Loading';
+import Loading from '../../../Components/Loading/Loading';
 
 const AvailableAppointment = ({ selectedDate }) => {
     // const [appointmentOptions, setAppointmentOptions] = useState([]);
